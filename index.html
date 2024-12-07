@@ -6,10 +6,16 @@
     <meta name="description" content="Expert in oil and gas automation, IoT solutions, and consulting. Specializing in fuel management systems optimization, fire safety, and industrial automation across Tanzania.">
     <meta name="keywords" content="oil and gas automation, IoT solutions, fuel management, Tanzania, fire safety systems, industrial automation, tank farm management">
     <meta name="author" content="Emanuel David Lukosi">
-    <title>Emanuel David Lukosi - Oil & Gas Operations Expert</title>
+    <title>Emanuel David Lukosi - Oil & Gas Automation Expert</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for ROI visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- JSZip for chart exports -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -22,6 +28,7 @@
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#achievements">Achievements</a></li>
                 <li><a href="#services">Services</a></li>
+                <li><a href="#roi-calculator">ROI Calculator</a></li>
                 <li><a href="#blog">Blog</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -243,6 +250,300 @@
         </div>
     </section>
 
+    <section id="roi-calculator" class="roi-calculator">
+        <div class="container">
+            <h2>Advanced ROI Calculator</h2>
+            <p class="section-description">Calculate and analyze the potential return on investment for your automation project</p>
+            
+            <div class="calculator-tabs">
+                <button class="tab-btn active" data-tab="basic">Basic ROI</button>
+                <button class="tab-btn" data-tab="sensitivity">Sensitivity Analysis</button>
+                <button class="tab-btn" data-tab="comparison">Scenario Comparison</button>
+                <button class="tab-btn" data-tab="industry">Industry Metrics</button>
+            </div>
+
+            <div class="calculator-container">
+                <!-- Basic ROI Form -->
+                <form id="roiForm" class="roi-form tab-content active" data-tab="basic">
+                    <!-- Initial Investment -->
+                    <div class="input-group">
+                        <h3>Initial Investment</h3>
+                        <div class="form-group">
+                            <label for="hardwareCost">Hardware Cost ($)</label>
+                            <input type="number" id="hardwareCost" min="0" step="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="installationCost">Installation & Setup ($)</label>
+                            <input type="number" id="installationCost" min="0" step="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="trainingCost">Training & Documentation ($)</label>
+                            <input type="number" id="trainingCost" min="0" step="100" required>
+                        </div>
+                    </div>
+
+                    <!-- Annual Operating Costs -->
+                    <div class="input-group">
+                        <h3>Annual Operating Costs</h3>
+                        <div class="form-group">
+                            <label for="maintenanceCost">Maintenance & Support ($)</label>
+                            <input type="number" id="maintenanceCost" min="0" step="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="powerCost">Power & Utilities ($)</label>
+                            <input type="number" id="powerCost" min="0" step="100" required>
+                        </div>
+                    </div>
+
+                    <!-- Expected Benefits -->
+                    <div class="input-group">
+                        <h3>Expected Annual Benefits</h3>
+                        <div class="form-group">
+                            <label for="laborSavings">Labor Cost Savings ($)</label>
+                            <input type="number" id="laborSavings" min="0" step="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="errorReduction">Error Reduction Savings ($)</label>
+                            <input type="number" id="errorReduction" min="0" step="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productivityGain">Productivity Gain ($)</label>
+                            <input type="number" id="productivityGain" min="0" step="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fuelSavings">Fuel Management Savings ($)</label>
+                            <input type="number" id="fuelSavings" min="0" step="100" required>
+                        </div>
+                    </div>
+
+                    <!-- Time Period -->
+                    <div class="input-group">
+                        <h3>Time Period</h3>
+                        <div class="form-group">
+                            <label for="years">Years to Project</label>
+                            <select id="years" required>
+                                <option value="1">1 Year</option>
+                                <option value="2">2 Years</option>
+                                <option value="3">3 Years</option>
+                                <option value="5">5 Years</option>
+                                <option value="10">10 Years</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="calculate-btn">
+                        Calculate ROI
+                        <i class="fas fa-calculator"></i>
+                    </button>
+                </form>
+
+                <!-- Sensitivity Analysis Form -->
+                <form id="sensitivityForm" class="roi-form tab-content" data-tab="sensitivity">
+                    <div class="input-group">
+                        <h3>Risk Factors</h3>
+                        <div class="form-group">
+                            <label for="downtimeRisk">Potential Downtime Risk (%)</label>
+                            <input type="number" id="downtimeRisk" min="0" max="100" step="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="costOverrun">Cost Overrun Risk (%)</label>
+                            <input type="number" id="costOverrun" min="0" max="100" step="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="implementationDelay">Implementation Delay Risk (months)</label>
+                            <input type="number" id="implementationDelay" min="0" max="24" step="1" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>Market Factors</h3>
+                        <div class="form-group">
+                            <label for="fuelPriceVariation">Fuel Price Variation (%)</label>
+                            <input type="number" id="fuelPriceVariation" min="-50" max="50" step="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="laborCostTrend">Labor Cost Trend (%/year)</label>
+                            <input type="number" id="laborCostTrend" min="-10" max="20" step="1" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="calculate-btn">
+                        Run Sensitivity Analysis
+                        <i class="fas fa-chart-line"></i>
+                    </button>
+                </form>
+
+                <!-- Scenario Comparison Form -->
+                <form id="comparisonForm" class="roi-form tab-content" data-tab="comparison">
+                    <div class="scenario-container">
+                        <div class="scenario" data-scenario="1">
+                            <h3>Scenario 1: IoT-Based Automation</h3>
+                            <!-- Clone of basic ROI form fields -->
+                        </div>
+                        <div class="scenario" data-scenario="2">
+                            <h3>Scenario 2: Traditional System</h3>
+                            <!-- Clone of basic ROI form fields -->
+                        </div>
+                    </div>
+                    <button type="submit" class="calculate-btn">
+                        Compare Scenarios
+                        <i class="fas fa-balance-scale"></i>
+                    </button>
+                </form>
+
+                <!-- Industry Metrics Form -->
+                <form id="industryForm" class="roi-form tab-content" data-tab="industry">
+                    <div class="input-group">
+                        <h3>Fuel Efficiency Metrics</h3>
+                        <div class="form-group">
+                            <label for="currentFuelConsumption">Current Monthly Fuel Consumption (Liters)</label>
+                            <input type="number" id="currentFuelConsumption" min="0" step="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="expectedEfficiency">Expected Efficiency Improvement (%)</label>
+                            <input type="number" id="expectedEfficiency" min="0" max="100" step="1" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>Safety Metrics</h3>
+                        <div class="form-group">
+                            <label for="incidentCost">Average Cost per Safety Incident ($)</label>
+                            <input type="number" id="incidentCost" min="0" step="1000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="expectedReduction">Expected Incident Reduction (%)</label>
+                            <input type="number" id="expectedReduction" min="0" max="100" step="1" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>Maintenance Analysis</h3>
+                        <div class="form-group">
+                            <label for="currentMaintenance">Current Annual Maintenance Cost ($)</label>
+                            <input type="number" id="currentMaintenance" min="0" step="1000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="expectedMaintenance">Expected Maintenance Reduction (%)</label>
+                            <input type="number" id="expectedMaintenance" min="0" max="100" step="1" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="calculate-btn">
+                        Calculate Industry Metrics
+                        <i class="fas fa-industry"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Enhanced Results Section -->
+            <div id="roiResults" class="roi-results" style="display: none;">
+                <div class="results-tabs">
+                    <button class="tab-btn active" data-tab="summary">Summary</button>
+                    <button class="tab-btn" data-tab="details">Detailed Analysis</button>
+                    <button class="tab-btn" data-tab="charts">Charts</button>
+                    <button class="tab-btn" data-tab="reports">Reports</button>
+                </div>
+
+                <div class="results-content">
+                    <!-- Summary Tab -->
+                    <div class="tab-content active" data-tab="summary">
+                        <div class="results-grid">
+                            <!-- Existing result cards -->
+                        </div>
+                    </div>
+
+                    <!-- Detailed Analysis Tab -->
+                    <div class="tab-content" data-tab="details">
+                        <div class="analysis-grid">
+                            <div class="analysis-card">
+                                <h4>Break-even Analysis</h4>
+                                <div id="breakEvenChart" class="chart"></div>
+                            </div>
+                            <div class="analysis-card">
+                                <h4>Sensitivity Analysis</h4>
+                                <div id="sensitivityChart" class="chart"></div>
+                            </div>
+                            <div class="analysis-card">
+                                <h4>Cash Flow Analysis</h4>
+                                <div id="cashFlowChart" class="chart"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Tab -->
+                    <div class="tab-content" data-tab="charts">
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <h4>ROI Projection</h4>
+                                <div id="roiChart" class="chart"></div>
+                            </div>
+                            <div class="chart-card">
+                                <h4>Cost Distribution</h4>
+                                <div id="costChart" class="chart"></div>
+                            </div>
+                            <div class="chart-card">
+                                <h4>Benefits Distribution</h4>
+                                <div id="benefitsChart" class="chart"></div>
+                            </div>
+                        </div>
+                        <div class="chart-actions">
+                            <button id="exportCharts" class="action-btn">
+                                <i class="fas fa-download"></i>
+                                Export Charts
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Reports Tab -->
+                    <div class="tab-content" data-tab="reports">
+                        <div class="report-options">
+                            <div class="report-type">
+                                <h4>Executive Summary</h4>
+                                <button class="download-btn" data-report="executive">
+                                    <i class="fas fa-file-pdf"></i>
+                                    Download PDF
+                                </button>
+                            </div>
+                            <div class="report-type">
+                                <h4>Detailed Analysis</h4>
+                                <button class="download-btn" data-report="detailed">
+                                    <i class="fas fa-file-excel"></i>
+                                    Download Excel
+                                </button>
+                            </div>
+                            <div class="report-type">
+                                <h4>Custom Report</h4>
+                                <button class="download-btn" data-report="custom">
+                                    <i class="fas fa-file-word"></i>
+                                    Download Word
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="blog" class="blog">
+        <div class="container">
+            <h2>Latest Insights</h2>
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <div class="blog-content">
+                        <h3>How IoT is Transforming Fuel Management Systems in Tanzania</h3>
+                        <p>Explore how Internet of Things (IoT) technologies are revolutionizing Tanzania's fuel sector through innovative solutions that enhance monitoring, reduce unaccountabilities, and optimize operations.</p>
+                        <div class="blog-meta">
+                            <span><i class="fas fa-calendar"></i> February 2024</span>
+                        </div>
+                        <a href="blog/iot-fuel-management.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="testimonials" class="testimonials">
         <div class="container">
             <h2>Client Testimonials</h2>
@@ -283,31 +584,131 @@
 
     <section id="resources" class="resources">
         <div class="container">
-            <h2>Free Resources</h2>
-            <div class="resources-grid">
-                <div class="resource-card">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3>IoT Implementation Guide</h3>
-                    <p>A comprehensive guide to implementing IoT in fuel management systems.</p>
-                    <a href="resources/iot-guide.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i> Download PDF
-                    </a>
+            <h2>Resources & Publications</h2>
+            
+            <!-- Templates Section -->
+            <div class="resource-category">
+                <h3>Templates & Tools</h3>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3>ROI Calculator</h3>
+                        <p>Calculate potential savings and ROI for automation implementation.</p>
+                        <a href="assets/templates/roi-calculator.xlsx" class="download-btn" download>
+                            <span>Download Calculator</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>Project Planning Template</h3>
+                        <p>Comprehensive template for planning IoT implementation projects.</p>
+                        <a href="assets/templates/project-template.xlsx" class="download-btn" download>
+                            <span>Download Template</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h3>Safety Checklist</h3>
+                        <p>Essential safety protocols and checklists for fuel station operations.</p>
+                        <a href="assets/templates/safety-checklist.pdf" class="download-btn" download>
+                            <span>Download Checklist</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="resource-card">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Safety Checklist</h3>
-                    <p>Essential safety checklist for fuel station operations.</p>
-                    <a href="resources/safety-checklist.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i> Download PDF
-                    </a>
+            </div>
+            
+            <!-- Publications Section -->
+            <div class="resource-category">
+                <h3>Publications & Research</h3>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>IoT Implementation Guide</h3>
+                        <p>Comprehensive guide on implementing IoT in fuel management systems.</p>
+                        <a href="assets/publications/iot-guide.pdf" class="download-btn" download>
+                            <span>Read Paper</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Industry Research</h3>
+                        <p>Latest research on automation trends in oil and gas industry.</p>
+                        <a href="assets/publications/industry-research.pdf" class="download-btn" download>
+                            <span>Download Research</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Case Studies</h3>
+                        <p>Real-world implementation cases and success stories.</p>
+                        <a href="assets/publications/case-studies.pdf" class="download-btn" download>
+                            <span>View Cases</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="resource-card">
-                    <i class="fas fa-file-powerpoint"></i>
-                    <h3>Automation ROI Calculator</h3>
-                    <p>Excel template to calculate ROI on automation investments.</p>
-                    <a href="resources/roi-calculator.xlsx" class="download-btn" download>
-                        <i class="fas fa-download"></i> Download Excel
-                    </a>
+            </div>
+            
+            <!-- Downloads Section -->
+            <div class="resource-category">
+                <h3>Free Downloads</h3>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3>Video Tutorials</h3>
+                        <p>Step-by-step guides for implementing automation solutions.</p>
+                        <a href="assets/downloads/tutorials.zip" class="download-btn" download>
+                            <span>Download Series</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <h3>Code Samples</h3>
+                        <p>Example scripts and configurations for IoT implementations.</p>
+                        <a href="assets/downloads/code-samples.zip" class="download-btn" download>
+                            <span>Download Code</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-presentation"></i>
+                        </div>
+                        <h3>Presentation Templates</h3>
+                        <p>Professional templates for project presentations.</p>
+                        <a href="assets/downloads/presentations.zip" class="download-btn" download>
+                            <span>Download Pack</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -358,24 +759,6 @@
                 <i class="fas fa-check-circle success-icon"></i>
                 <h3>Thank You for Subscribing!</h3>
                 <p>You've successfully subscribed to my newsletter. Check your email for a confirmation message.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="blog" class="blog">
-        <div class="container">
-            <h2>Latest Insights</h2>
-            <div class="blog-grid">
-                <div class="blog-card">
-                    <div class="blog-content">
-                        <h3>How IoT is Transforming Fuel Management Systems in Tanzania</h3>
-                        <p>Explore how Internet of Things (IoT) technologies are revolutionizing Tanzania's fuel sector through innovative solutions that enhance monitoring, reduce unaccountabilities, and optimize operations.</p>
-                        <div class="blog-meta">
-                            <span><i class="fas fa-calendar"></i> February 2024</span>
-                        </div>
-                        <a href="blog/iot-fuel-management.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
